@@ -14,14 +14,18 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Math</td>
-                <td>desc math</td>
-                <td>2h</td>
-                <td>
-                    <a  class="btn btn-success btn-sm" href="{{route("user.quizzes.show",["quiz"=>1])}}">Démarrer</a>
-                </td>
-              </tr>
+              @foreach ($quizzes as $quiz)
+                <tr>
+                  <td>{{$quiz->title}}</td>
+                  <td>
+                    {{$quiz->tidescription ?? '--'}}
+                  </td>
+                  <td>{{$quiz->duration}}h</td>
+                  <td>
+                      <a  class="btn btn-success btn-sm" href="{{route("user.quizzes.show",["quiz"=>$quiz->id])}}">Démarrer</a>
+                  </td>
+                </tr>
+              @endforeach
             </tbody>
           </table>
     </div>

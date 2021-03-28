@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Question;
 use App\Quiz;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class QuizController extends Controller
 {
@@ -14,7 +17,8 @@ class QuizController extends Controller
      */
     public function index()
     {
-        return view("user.quiz");
+        $quizzes = Auth::user()->quizzes()->orderBy("created_at")->get() ;
+        return view("user.quiz",["quizzes"=>$quizzes]);
     }
 
     /**
@@ -35,18 +39,80 @@ class QuizController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $quiz=Quiz::find($request->QuizId);
+        if($this->isContainInputQuestion($quiz)){
+            //yes
+        }
+        $score = $this->correction($request);
+        $nbOfQuestions=$quiz->questions()->count();
+        $scoreWithPercent = number_format($score*100/$nbOfQuestions,2); 
+        dd($score .'/'. $nbOfQuestions,$scoreWithPercent.'%');
+        dd("no");
     }
 
+    private function correction(Request $request){
+        //test
+
+        $score=0;
+        foreach ($request->QuestionId as $QuestionId) {
+            $user_response = $request->option[$QuestionId];
+            $question  = Question::find($QuestionId);
+                switch ($question->type_question) {
+                    case "boolean":
+                        $user_response=="true" ? $user_response=true : $user_response=false;
+                        if($question->boolean_answer==$user_response)  $score++  ;
+                        break;
+                    case "multiple_choice":
+                        $choices=$question->choices()->get();
+                        $correct_choice= $choices->filter(function($choice){
+                            return $choice->isCorrect==1;
+                        });
+                        if($correct_choice[0]->id==$user_response) $score++ ;
+                        break;
+                    case "multiple_answers":
+                        $choices=$question->choices()->get();
+                        $correct_answers= $choices->filter(function($choice){
+                            return $choice->isCorrect==1;
+                        })->pluck("id")->toArray();
+                        
+                        $diff1 = array_diff($user_response,$correct_answers);
+                        $diff2 = array_diff($correct_answers,$user_response);
+                    
+                        if(!$diff1 && !$diff2) $score++ ;
+                        break;
+                    default:
+                        
+                        break;
+                }
+        }
+        return $score;
+    }
+
+
+
+    private function isContainInputQuestion(Quiz $quiz){
+        $questions=$quiz->questions()->get();
+        
+        foreach ($questions as $question) {
+            if($question->type_question=="input") return True;
+        }
+        return False;
+    }
     /**
      * Display the specified resource.
      *
      * @param  \App\Quiz  $quiz
      * @return \Illuminate\Http\Response
      */
-    public function show($quiz)
-    {
-        return view("user.Passquiz");
+    public function show(Quiz $quiz)
+    {   
+        $questions =$quiz->questions()->get()->map(function($question){
+            $choices=$question->choices()->get();
+            $question->choices = $choices;
+            unset($question->pivot);
+            return $question;
+        });        
+        return view("user.Passquiz",["quiz"=>$quiz,"questions"=>$questions]);
     }
 
     /**
@@ -80,6 +146,6 @@ class QuizController extends Controller
      */
     public function destroy(Quiz $quiz)
     {
-        //
+        
     }
 }
