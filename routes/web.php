@@ -30,8 +30,13 @@ Route::group(["as"=>"user.","middleware"=>['auth','userRole']],function(){
     })->name('home');
 
     //Route::get('cours',"coursController@index")->name('cours');
-    Route::resource("cours","coursController");
+    Route::resource("cours","courseController");
     Route::resource("quizzes","quizController");
+    Route::resource("modules","subjectController");
+    Route::get("commencer/{course}","courseController@commencer")->name("cours.commencer");
+    Route::post("updateCurrentPageAndProgCourse","courseController@updateCurrentPageAndProgCourse");
+   // Route::post("updateProgressionCourse","courseController@updateProgression");
+
     
 });
 

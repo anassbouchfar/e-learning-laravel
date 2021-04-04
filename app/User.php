@@ -40,4 +40,9 @@ class User extends Authenticatable
     public function quizzes(){
         return $this->belongsToMany("App\Quiz");
     }
+
+    public function courses(){
+        return $this->belongsToMany("App\Course")
+                    ->withPivot(['currentPage','progression']);
+    }
 }
