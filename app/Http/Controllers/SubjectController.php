@@ -29,7 +29,8 @@ class SubjectController extends Controller
                     $nb++;
                 }
             }
-            $subject->progression= number_format($sum/$nb,2);
+
+            $subject->progression= $nb==0 ? 0:number_format($sum/$nb,2);
         }
 
         return view("user.subject.index",["subjects"=>$subjects]);
