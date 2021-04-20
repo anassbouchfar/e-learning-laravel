@@ -16,7 +16,21 @@ class SubjectController extends Controller
      */
     public function index()
     {
+        $courses=Auth::user()->courses()->get();
+        
         $subjects=Subject::all();
+
+        foreach ($subjects as $subject) {
+            $nb=0;
+            $sum=0;
+            foreach ($courses as $course) {
+                if($course->subject_id==$subject->id) {
+                    $sum+=$course->pivot->progression;
+                    $nb++;
+                }
+            }
+            $subject->progression= number_format($sum/$nb,2);
+        }
 
         return view("user.subject.index",["subjects"=>$subjects]);
     }

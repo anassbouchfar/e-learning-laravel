@@ -20,10 +20,10 @@ class QuizController extends Controller
         //->where("score","is","NULL")->orderBy("created_at")
         $quizzes = Auth::user()->quizzes()->get() ;
         $quizzesNotPassed=$quizzes->filter(function($quiz){
-            return $quiz->pivot->score==NULL;
+            return $quiz->pivot->score===NULL;
         });
         $quizzesPassed=$quizzes->filter(function($quiz){
-            return $quiz->pivot->score!=NULL;
+            return $quiz->pivot->score!==NULL;
         });
         return view("user.quiz",["quizzes"=>$quizzesNotPassed,'quizzesPassed'=>$quizzesPassed]);
     }
