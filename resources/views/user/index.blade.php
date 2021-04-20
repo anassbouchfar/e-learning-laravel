@@ -1,5 +1,5 @@
-@extends('user.layouts.master')
+@extends('user.layouts.master2')
 
 @section('content')
-    <h1>this is user page</h1>
+
 @endsection

@@ -13,4 +13,8 @@ class Question extends Model
     public function choices(){
         return $this->hasMany("App\Choice");
     }
+
+    public function subject(){
+        return $this->belongsTo("App\Subject");
+    }
 }

@@ -61,7 +61,7 @@ class CourseController extends Controller
     public function commencer(Course $course){
         $user=Auth::user();
         $user->courses()->attach($course->id);
-        return $this->show($course);
+        return redirect()->route("user.cours.show",["cour"=>$course]) ;//$this->show();
     }
 
     public function updateCurrentPageAndProgCourse(Request $request){
@@ -105,7 +105,7 @@ class CourseController extends Controller
      * @param  \App\Cours  $cours
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cours $cours)
+    public function destroy(Course $cours)
     {
         //
     }

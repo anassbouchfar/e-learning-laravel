@@ -1,21 +1,47 @@
-@extends('user.layouts.master')
+@extends('user.layouts.master2')
+
+@section('pageTitle',"Modules")
+    
+@section('ModulesActive',"True")
+    
 
 @section('content')
 <div class="container">
-    <h2>Modules : </h2>
     <div class="row">
+      
       @if(count($subjects))
-        @foreach ($subjects as $subject)
-          <div class="card m-3" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">{{$subject->title}}</h5>
-              <p class="card-text">{{$subject->description}}</p>
-              <a href="{{route("user.modules.show",["module"=>$subject->id])}}" class="btn btn-primary">Accéder au module</a>
-            </div>
-          </div>
-        @endforeach
-           
+        
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Description</th>
+              <th>Progress</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($subjects as $subject)
+        
+          <tr>
+            <a href="">
+            <td>{{$subject->title}}</td>
+            <td>{{$subject->description}}</td>
+            <td>
+              <div class="progress progress-xs">
+                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+              </div>
+              <span class="badge bg-danger">55%</span>
+            </td>
+            <td>
+              <a href="{{route("user.modules.show",["module"=>$subject->id])}}" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>
+            </td>
+          </a>
+          </tr>
+        
+          @endforeach
+          </tbody>
+        </table>
        @else
            <h5>Aucun Module</h5>
        @endif 

@@ -17,8 +17,15 @@ class QuizController extends Controller
      */
     public function index()
     {
-        $quizzes = Auth::user()->quizzes()->orderBy("created_at")->get() ;
-        return view("user.quiz",["quizzes"=>$quizzes]);
+        //->where("score","is","NULL")->orderBy("created_at")
+        $quizzes = Auth::user()->quizzes()->get() ;
+        $quizzesNotPassed=$quizzes->filter(function($quiz){
+            return $quiz->pivot->score==NULL;
+        });
+        $quizzesPassed=$quizzes->filter(function($quiz){
+            return $quiz->pivot->score!=NULL;
+        });
+        return view("user.quiz",["quizzes"=>$quizzesNotPassed,'quizzesPassed'=>$quizzesPassed]);
     }
 
     /**
@@ -41,16 +48,19 @@ class QuizController extends Controller
     {
         $quiz=Quiz::find($request->QuizId);
         if($this->isContainInputQuestion($quiz)){
-            //yes
+            dd("input quizz");
         }
         $score = $this->correction($request);
         $nbOfQuestions=$quiz->questions()->count();
-        $scoreWithPercent = number_format($score*100/$nbOfQuestions,2); 
-        dd($score .'/'. $nbOfQuestions,$scoreWithPercent.'%');
-        dd("no");
+        $scoreWithPercent = number_format($score*100/$nbOfQuestions,2);
+         $quizwithUser=Auth::user()->quizzes()->where("id","=",$quiz->id)->first();
+         $quizwithUser->pivot->score=$scoreWithPercent;
+         $quizwithUser->pivot->correctQuestions=$score;
+         $quizwithUser->pivot->save();
+        return view("user.resultQuiz",["quiz"=>$quizwithUser,"totalQuestions"=>$nbOfQuestions]);
     }
 
-    private function correction(Request $request){
+    public static function correction(Request $request){
         //test
 
         $score=0;
@@ -67,7 +77,7 @@ class QuizController extends Controller
                         $correct_choice= $choices->filter(function($choice){
                             return $choice->isCorrect==1;
                         });
-                        if($correct_choice[0]->id==$user_response) $score++ ;
+                        if($correct_choice->first()->id==$user_response) $score++ ;
                         break;
                     case "multiple_answers":
                         $choices=$question->choices()->get();

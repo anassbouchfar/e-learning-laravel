@@ -1,30 +1,54 @@
-@extends('user.layouts.master')
+@extends('user.layouts.master2')
+
+
+@section('pageTitle',"Modules / $subject->title")
 
 @section('content')
-<div class="container">
-    <h2>Mes Cours</h2>
-    <div class="row">
       @if(count($courses))
-        @foreach ($courses as $course)
-          <div class="card m-3" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">{{$course->title}}</h5>
-              <p class="card-text">{{$course->description}}</p>
-              @if($pivot=$course->pivot)
-              <a href="{{route("user.cours.show",["cour"=>$course->id])}}" class="btn btn-primary">Continuer</a>
-              <span>{{$pivot->progression}} %</span>
-              @else
-              <a href="{{route("user.cours.commencer",["course"=>$course->id])}}" class="btn btn-success">Commencer</a>
-              @endif
-            </div>
-          </div>
-        @endforeach
+
+       
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Description</th>
+              <th>Progress</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($courses as $course)
+            
+            <tr>
+              <a href="">
+              <td>{{$course->title}}</td>
+              <td>{{$course->description}}</td>
+              <td>
+                @if($pivot=$course->pivot)
+                <div class="progress progress-xs">
+                  <div class="progress-bar progress-bar-danger" style="width: {{$pivot->progression}}%"></div>
+                </div>
+                <span class="badge bg-danger">{{$pivot->progression}}%</span>
+                @else
+                No inscrit
+                @endif
+              </td>
+              <td>
+                @if($pivot=$course->pivot)
+                <a href="{{route("user.cours.show",["cour"=>$course->id])}}" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Continuer</a>
+                @else
+                <a href="{{route("user.cours.commencer",["course"=>$course->id])}}" class="btn btn-success btn-sm"><i class="fa fa-check" aria-hidden="true"></i> Commencer</a>
+                @endif
+
+              </td>
+            </a>
+            </tr>
+          @endforeach
+          </tbody>
+        </table>
            
        @else
            <h5>Aucun cours</h5>
        @endif 
-    </div>
-  </div>
 
 @endsection

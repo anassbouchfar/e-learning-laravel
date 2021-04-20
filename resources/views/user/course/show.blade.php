@@ -1,4 +1,7 @@
-@extends('user.layouts.master')
+@extends('user.layouts.master2')
+
+@section('pageTitle',$course->title)
+
 
 @section('Headerscripts')
 <script src="http://mozilla.github.io/pdf.js/build/pdf.js"></script>
@@ -9,30 +12,56 @@
 
 
 @section('content')
-<div class="container">
-    <div class="row">
-      <h1>{{$course->title}} </h1>
-      <p >
-        <span id="prog">{{$course->pivot->progression}}</span>%
-      </p>
-        <p>{{$course->description}}</p>
-        <div>
-          <button class="btn btn-warning" id="prev">Previous</button>
-          <button class="btn btn-success" id="next">Next</button>
-          &nbsp; &nbsp;
-          <span>Page: <span id="page_num"></span> / <span id="page_count"></span></span>
-        </div>
-
-        <canvas id="the-canvas"></canvas>
-        <div>
-          <button class="btn btn-warning" id="prev1">Previous</button>
-          <button class="btn btn-success" id="next1">Next</button>
-          &nbsp; &nbsp;
-          <span>Page: <span id="page_num1"></span> / <span id="page_count1"></span></span>
-        </div>
-
+<div class="card">
+  <div class="progress progress-xs">
+    <div id="progressCourse" class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar"  aria-valuemin="0" aria-valuemax="100" style="width: {{$course->pivot->progression}}%">
     </div>
   </div>
+  <div class="card-header">
+    <h3 class="card-title">
+      <span class="badge bg-secondary"><span id="prog">{{$course->pivot->progression}} </span> %</span>
+    </h3>
+    <div class="card-tools">
+      <button id="prev" type="button" class="btn btn-tool" >
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <button id="next" type="button" class="btn btn-tool" >
+        <i class="fas fa-arrow-right"></i>
+      </button>
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn bg-secondary btn-sm">
+          <input type="radio" name="options" id="option_b1" autocomplete="off" checked=""> <span id="page_num"></span> 
+        </label>
+        <label class="btn bg-secondary btn-sm">
+          <input type="radio" name="options" id="option_b2" autocomplete="off"> <span id="page_count"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <canvas id="the-canvas"></canvas>
+  </div>
+  <!-- /.card-body -->
+  <div class="card-footer">
+    <div class="card-tools">
+      <button id="prev1" type="button" class="btn btn-tool" >
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <button id="next1" type="button" class="btn btn-tool" >
+        <i class="fas fa-arrow-right"></i>
+      </button>
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn bg-secondary btn-sm">
+          <input type="radio" name="options" id="option_b1" autocomplete="off" checked=""> <span id="page_num1"></span> 
+        </label>
+        <label class="btn bg-secondary btn-sm">
+          <input type="radio" name="options" id="option_b2" autocomplete="off"> <span id="page_count1"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <!-- /.card-footer-->
+</div>
 
 @endsection
 
@@ -60,7 +89,7 @@ var pdfDoc = null,
     pageNum = {{$course->pivot->currentPage}},
     pageRendering = false,
     pageNumPending = null,
-    scale = 10
+    scale = 1.5
     canvas = document.getElementById('the-canvas'),
     ctx = canvas.getContext('2d'),
     courseId = {{$course->id}};
@@ -143,6 +172,7 @@ document.getElementById('next1').addEventListener('click', onNextPage);
 function updateCurrentPageAndProgCourse(){
    prog = pageNum*100/allPages 
    $("#prog").text(prog.toFixed(0))
+   $("#progressCourse").css("width",prog.toFixed(0)+"%")
     $.ajax({
     headers: {
       'X-CSRF-Token': $('meta[name="_token"]').attr('content')

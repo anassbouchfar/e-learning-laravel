@@ -33,10 +33,11 @@ Route::group(["as"=>"user.","middleware"=>['auth','userRole']],function(){
     Route::resource("cours","courseController");
     Route::resource("quizzes","quizController");
     Route::resource("modules","subjectController");
+    Route::resource("Training","TrainingController");
     Route::get("commencer/{course}","courseController@commencer")->name("cours.commencer");
     Route::post("updateCurrentPageAndProgCourse","courseController@updateCurrentPageAndProgCourse");
    // Route::post("updateProgressionCourse","courseController@updateProgression");
-
+    Route::post("/trainingLevels","TrainingController@trainingLevels");
     
 });
 
@@ -47,4 +48,8 @@ Route::group(["as"=>"admin.","prefix"=>"admin","middleware"=>['auth','adminRole'
         return view('admin.index');
     })->name('home');
     
+});
+
+Route::get("/test",function(){
+    return view("user.layouts.master2");
 });
