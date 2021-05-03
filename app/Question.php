@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
+    protected $fillable = [
+        'content', 'type_question'
+    ];
     public function quizzes(){
         return $this->belongsToMany("App\Quiz");
     }

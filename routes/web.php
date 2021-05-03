@@ -43,11 +43,17 @@ Route::group(["as"=>"user.","middleware"=>['auth','userRole']],function(){
 
 
 Route::group(["as"=>"admin.","prefix"=>"admin","middleware"=>['auth','adminRole']],function(){
-  
     Route::get('home', function(){
         return view('admin.index');
     })->name('home');
+    Route::resource("modules","Admin\ModuleAdminController");
+    Route::resource("courses","Admin\CourseAdminController");
+    Route::resource("questions","Admin\QuestionAdminController");
+    Route::post("uploadQuestions","Admin\QuestionAdminController@uploadQuestions")->name("uploadQuestions");
+    Route::post("uploadQuestionsEntrainement","Admin\QuestionAdminController@uploadQuestionsEntrainement")->name("uploadQuestionsEntrainement");
     
+    Route::resource("quizzes","Admin\QuizAdminController");
+    Route::get("/Tests/{module}","Admin\QuizAdminController@getTestsByModule")->name("testsByModule");
 });
 
 Route::get("/test",function(){

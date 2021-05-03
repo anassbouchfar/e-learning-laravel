@@ -44,7 +44,7 @@
                             <div class="col-md-6">
                                 <select class="form-control @error('grade') is-invalid @enderror" name="grade" required>
                                     @foreach ($grades as $grade)
-                                        <option  value="{{$grade["id_grade"]}}">{{$grade["name"]}}</option>
+                                        <option  value="{{$grade->id}}">{{$grade->name}}</option>
                                     @endforeach
                                 </select>
                                 @error('grade')

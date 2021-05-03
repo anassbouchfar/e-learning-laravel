@@ -13,4 +13,11 @@ class Quiz extends Model
     public function questions(){
         return $this->belongsToMany("App\Question");
     }
+    public function subject(){
+        return $this->belongsTo("App\Subject");
+    }
+
+    public function level(){
+        return $this->belongsTo("App\Level");
+    }
 }
