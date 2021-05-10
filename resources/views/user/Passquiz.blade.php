@@ -19,9 +19,9 @@
                     <input type="hidden" value="{{$question->id}}" name="QuestionId[]">
                   </div>
                   <div class="card-body">
-                    @if ($question->image_path )
-                    <img src="{{$question->image_path  }}" class="img-fluid" >
-                    @endif
+                    @if ($question->image_path)
+                      <img src="/picturesTests/{{$question->image_path}}" class="img-fluid m-1 w-50 h-50" >
+                      @endif
                     
                     @foreach ($question->choices as $choice)
                     <div class="icheck-primary ">
@@ -41,9 +41,9 @@
                     <input type="hidden" value="{{$question->id}}" name="QuestionId[]">
                   </div>
                   <div class="card-body">
-                    @if ($question->image_path )
-                    <img src="{{$question->image_path  }}" class="img-fluid" >
-                    @endif
+                    @if ($question->image_path)
+                      <img src="/picturesTests/{{$question->image_path}}" class="img-fluid m-1 w-50 h-50" >
+                      @endif
                     
                     @foreach ($question->choices as $choice)
                     <div class="icheck-primary ">
@@ -64,8 +64,8 @@
                       <input type="hidden" value="{{$question->id}}" name="QuestionId[]">
                     </div>
                     <div class="card-body">
-                      @if ($question->image_path )
-                      <img src="{{$question->image_path  }}" class="img-fluid" >
+                      @if ($question->image_path)
+                      <img src="/picturesTests/{{$question->image_path}}" class="img-fluid m-1 w-50 h-50" >
                       @endif
                       
                       <div class="icheck-primary ">
@@ -85,19 +85,27 @@
 
                   @break
                   @case("input")
-                  <h6>{{$question->content}}</h6>
-                  <img src="{{$question->image_path  }}" class="img-fluid" >
-                  <input type="hidden" value="{{$question->id}}" name="QuestionId[]">
-                  <div class="form-check">
-                    <textarea required class="form-check-textarea" cols="50" name="option[{{$question->id}}]" id=""></textarea>
-                 </div>
+                  <div class="card card-primary card-outline">
+                    <div class="card-header">
+                      <h5 class="m-0">{{$question->content}}</h5>
+                      <input type="hidden" value="{{$question->id}}" name="QuestionId[]">
+                    </div>
+                    <div class="card-body">
+                      @if ($question->image_path)
+                      <img src="/picturesTests/{{$question->image_path}}" class="img-fluid m-1 w-50 h-50" >
+                      @endif
+                      <div class="form-group">
+                        <textarea  required name="option[{{$question->id}}]" class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                      </div>
+                    </div>
+                  </div>
                     @break
                 @default
                     <h3>not found</h3>
             @endswitch
         @endforeach
          
-           <button class="btn btn-success" type="submit">Submit</button>
+           <button class="btn btn-success btn-block" type="submit">Submit</button>
       </form>
 
 @endsection

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\PendingQuiz;
 use App\Question;
 use App\Quiz;
 use App\User;
@@ -9,7 +10,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class QuizController extends Controller
-{
+{   
+
+    public function __construct()
+    {
+        $this->middleware("PreventBackHistoryPassTest",["only"=>"show"]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +23,6 @@ class QuizController extends Controller
      */
     public function index()
     {
-        //->where("score","is","NULL")->orderBy("created_at")
         $quizzes = Auth::user()->quizzes()->get() ;
         $quizzesNotPassed=$quizzes->filter(function($quiz){
             return $quiz->pivot->score===NULL;
@@ -47,16 +52,33 @@ class QuizController extends Controller
     public function store(Request $request)
     {
         $quiz=Quiz::find($request->QuizId);
-        if($this->isContainInputQuestion($quiz)){
-            dd("input quizz");
-        }
+       
         $score = $this->correction($request);
         $nbOfQuestions=$quiz->questions()->count();
         $scoreWithPercent = number_format($score*100/$nbOfQuestions,2);
          $quizwithUser=Auth::user()->quizzes()->where("id","=",$quiz->id)->first();
          $quizwithUser->pivot->score=$scoreWithPercent;
          $quizwithUser->pivot->correctQuestions=$score;
-         $quizwithUser->pivot->save();
+         
+
+         if($this->isContainInputQuestion($quiz)){
+            foreach ($request->QuestionId as $QuestionId) {
+                $question  = Question::find($QuestionId);
+                if($question->type_question=="input"){
+                    $pendingQuiz=new PendingQuiz();
+                    $pendingQuiz->quiz_id=$request->QuizId;
+                    $pendingQuiz->user_id=Auth::id();
+                    $pendingQuiz->question_id=$QuestionId;
+                    $pendingQuiz->user_response=$request->option[$QuestionId];
+                    $pendingQuiz->save();
+                }
+            }
+
+            $quizwithUser->pivot->isAdminCorrection=1;
+            $quizwithUser->pivot->save();
+            return redirect("/quizzes")->with("message","Test envoyeé à l'admin avec succès");
+        }
+        $quizwithUser->pivot->save();
         return view("user.resultQuiz",["quiz"=>$quizwithUser,"totalQuestions"=>$nbOfQuestions]);
     }
 
@@ -116,9 +138,12 @@ class QuizController extends Controller
      */
     public function show(Quiz $quiz)
     {   
+        if(Auth::user()->quizzes->find($quiz)->pivot->score!==null){
+            return redirect("/quizzes");
+        }
         $questions =$quiz->questions()->get()->map(function($question){
             $choices=$question->choices()->get();
-            $question->choices = $choices;
+            $question->choices = $choices->shuffle();
             unset($question->pivot);
             return $question;
         });        

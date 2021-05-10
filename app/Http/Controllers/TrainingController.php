@@ -97,7 +97,7 @@ class TrainingController extends Controller
                 return $question;
             }
             $choices=$question->choices()->get();
-            $question->choices = $choices;
+            $question->choices = $choices->shuffle();
             $question->correct=$question->choices()->where("isCorrect","=",1)->get();
             return $question;
         });   

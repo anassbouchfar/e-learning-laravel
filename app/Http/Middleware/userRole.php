@@ -16,8 +16,13 @@ class userRole
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user()->id_role==2)
+        if(Auth::user()->role_id==2){
+            if ((Auth::user()->password_reseted==1)) 
+                return redirect(route("changePasswordForm"));
+             
             return $next($request);
+        }
+            
         return abort(403,'Unauthorized action.');
     }
 }

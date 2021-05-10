@@ -1,5 +1,7 @@
 <?php
 
+use App\PendingQuiz;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +23,7 @@ Auth::routes();
 
 
 //userRole
+Route::get("/changePasswordForm","Admin\UserAdminController@changePasswordForm")->name("changePasswordForm");
 
 
 Route::group(["as"=>"user.","middleware"=>['auth','userRole']],function(){
@@ -39,6 +42,7 @@ Route::group(["as"=>"user.","middleware"=>['auth','userRole']],function(){
    // Route::post("updateProgressionCourse","courseController@updateProgression");
     Route::post("/trainingLevels","TrainingController@trainingLevels");
     
+
 });
 
 
@@ -51,11 +55,22 @@ Route::group(["as"=>"admin.","prefix"=>"admin","middleware"=>['auth','adminRole'
     Route::resource("questions","Admin\QuestionAdminController");
     Route::post("uploadQuestions","Admin\QuestionAdminController@uploadQuestions")->name("uploadQuestions");
     Route::post("uploadQuestionsEntrainement","Admin\QuestionAdminController@uploadQuestionsEntrainement")->name("uploadQuestionsEntrainement");
+    Route::post("addQuestion","Admin\QuestionAdminController@addQuestion")->name("addQuestion");
+
+    Route::resource("users","Admin\UserAdminController");
+    Route::post("resetPasswordByAdmin","Admin\UserAdminController@resetPasswordByAdmin")->name("resetPasswordByAdmin");
+    Route::post("affectTestToUser","Admin\UserAdminController@affectTestToUser")->name("affectTestToUser");
+    Route::post("affectTestToGoupUsers","Admin\UserAdminController@affectTestToGoupUsers")->name("affectTestToGoupUsers");
+
+    Route::get("ResultTests","Admin\QuizAdminController@ResultTests")->name("ResultTests");
+    Route::get("CorrigerTest","Admin\QuizAdminController@CorrigerTest")->name("CorrigerTest");
+    Route::post("CorrigerTestStore","Admin\QuizAdminController@CorrigerTestStore")->name("CorrigerTestStore");
     
     Route::resource("quizzes","Admin\QuizAdminController");
     Route::get("/Tests/{module}","Admin\QuizAdminController@getTestsByModule")->name("testsByModule");
 });
 
 Route::get("/test",function(){
-    return view("user.layouts.master2");
+    return PendingQuiz::all();
 });
+

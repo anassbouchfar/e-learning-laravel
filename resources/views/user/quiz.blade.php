@@ -65,16 +65,25 @@
               <tr>
                 <td>{{$quiz->title}}</td>
                 <td>{{$quiz->description ?? "--" }}</td>
-                <td>{{$quiz->pivot->score}}%</td>
-                @if($quiz->pivot->score>=70)
-                <td>
-                    <span class="badge rounded-pill bg-success">réussi</span>
-                </td>
-                @else 
-                <td>
-                  <span class="badge rounded-pill bg-danger">échoué</span>
-              </td>
+                
+                @if($quiz->pivot->isAdminCorrection)
+                  <td>--</td>
+                  <td>
+                    <span class="badge rounded-pill bg-warning">en cours de correction</span>
+                  </td>
+                @else
+                    <td>{{$quiz->pivot->score}} %</td>
+                    @if($quiz->pivot->score>=70)
+                      <td>
+                          <span class="badge rounded-pill bg-success">réussi</span>
+                      </td>
+                    @else 
+                      <td>
+                        <span class="badge rounded-pill bg-danger">échoué</span>
+                      </td>
+                    @endif
                 @endif
+              
               </tr>
               @endforeach
             </tbody>

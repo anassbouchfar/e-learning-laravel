@@ -99,7 +99,86 @@
                 </div>
                 <!-- /.modal-dialog -->
               </div>
+              <a  type="button" class="btn btn-warning btn-sm"   data-toggle="modal" data-target="#QWithImage{{$subject->id}}"><i class="fas fa-plus"></i> Question</a>
+              <div  class="modal fade" id="QWithImage{{$subject->id}}" style="display: none;" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Ajouter une question au {{$subject->title}}</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <form action="{{route('admin.addQuestion')}}" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="subject_id" value="{{$subject->id}}">
+                        @csrf
+                        <div class="modal-body">
+                          <div class="form-group">
+                            <label for="content{{$subject->id}}">Contenu</label>
+                            <input required type="text" class="form-control" name="content" id="content{{$subject->id}}" placeholder="Enter content">
+                          </div>
+                          <div class="form-group">
+                            <label for="levels{{$subject->id}}">Niveau</label>
+                            <select required name="level" class="custom-select form-control-border border-width-2" id="levels{{$subject->id}}">
+                              <option value="1">Beginner</option>
+                              <option value="2">Intermediate</option>
+                              <option value="3">advanced</option>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label for="questionImage{{$subject->id}}">Image (jpeg,jpg,png)</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                  <input  accept=".jpeg,.jpg,.png" name="questionImage" type="file" class="custom-file-input" id="questionImage{{$subject->id}}">
+                                  <label class="custom-file-label" for="questionImage{{$subject->id}}">Choose Image</label>
+                                </div>
+                              </div>                          
+                          </div>
+                          <div class="form-group clearfix">
+                            <div class="icheck-primary ">
+                              <input type="radio" id="radioPrimary1{{$subject->id}}" name="type_question"  value="1">
+                              <label  for="radioPrimary1{{$subject->id}}">
+                                Multiple choix
+                              </label>
+                            </div>
+                            <div class="icheck-primary ">
+                              <input type="radio" id="radioPrimary2{{$subject->id}}" name="type_question" value="2">
+                              <label for="radioPrimary2{{$subject->id}}">
+                                Multiple réponses
+                              </label>
+                            </div>
+                            <div class="icheck-primary ">
+                              <input type="radio" id="radioPrimary3{{$subject->id}}" name="type_question"  value="3">
+                              <label for="radioPrimary3{{$subject->id}}">
+                                Booléenne
+                              </label>
+                            </div>
+                            <div class="icheck-primary ">
+                              <input type="radio" id="radioPrimary4{{$subject->id}}" name="type_question"  value="4">
+                              <label for="radioPrimary4{{$subject->id}}">
+                                Input
+                              </label>
+                            </div>
+                          </div>
 
+
+                          <div class="ResponsesContent">
+                     
+                          </div> 
+
+                        
+
+                          </div>
+                    <div class="modal-footer justify-content-between">
+                      <button type="button" class="btn btn-default closeModal" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-success">Save changes</button>
+                    </div>
+                </form>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
             </td>
           </a>
           </tr>
@@ -171,4 +250,139 @@
     </div>
   </div>
   
+@endsection
+
+@section('Footerscripts')
+<script>
+  $(function(){
+      $('.modal').on('hidden.bs.modal', function () {
+        clear()
+          });
+      $(".closeModal").click(function(){
+        clear()
+      })
+      function clear(){
+        $(".ResponsesContent").html("")
+            $("form").trigger("reset");
+      }
+
+          var bool =   ` <div class="form-group">
+                                      <div class="form-check">
+                                        <input required class="form-check-input" type="radio" name="choiceBool" value="1">
+                                        <label class="form-check-label">True</label>
+                                      </div>
+                                      <div class="form-check">
+                                        <input  class="form-check-input" type="radio" name="choiceBool" value="0">
+                                        <label class="form-check-label">False</label>
+                                      </div>
+                                    </div>`
+              var mc = `<div class="input-group m-1">
+        <div class="input-group-prepend">
+        <span class="input-group-text">
+          <input required type="radio" name="TrueChoice" value="1">
+        </span>
+        </div>
+        <input required type="text" class="form-control" name="choix[]"  placeholder="Choix 1">
+        </div>
+
+        <div class="input-group m-1">
+        <div class="input-group-prepend">
+        <span class="input-group-text">
+          <input type="radio" name="TrueChoice" value="2">
+        </span>
+        </div>
+        <input required type="text" class="form-control" name="choix[]"  placeholder="Choix 2">
+        </div>
+
+        <div class="input-group m-1">
+        <div class="input-group-prepend">
+        <span class="input-group-text">
+          <input type="radio" name="TrueChoice" value="3">
+        </span>
+        </div>
+        <input required type="text" class="form-control" name="choix[]"  placeholder="Choix 3">
+        </div>
+
+        <div class="input-group m-1">
+        <div class="input-group-prepend">
+        <span class="input-group-text">
+          <input type="radio" name="TrueChoice" value="4">
+        </span>
+        </div>
+        <input  type="text" class="form-control" name="choix[]"  placeholder="Choix 4">
+        </div>`;
+
+        var ma=`       <div class="input-group m-1">
+                              <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <input type="checkbox" name="TrueChoice[]" value="1">
+                              </span>
+                              </div>
+                              <input required type="text" class="form-control" name="choix[]"  placeholder="Choix 1">
+                              </div>
+                              
+                              <div class="input-group m-1">
+                              <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <input type="checkbox" name="TrueChoice[]" value="2">
+                              </span>
+                              </div>
+                              <input required type="text" class="form-control" name="choix[]"  placeholder="Choix 2">
+                              </div>
+                              
+                              <div class="input-group m-1">
+                              <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <input type="checkbox" name="TrueChoice[]" value="3">
+                              </span>
+                              </div>
+                              <input required type="text" class="form-control" name="choix[]"   placeholder="Choix 3">
+                              </div>
+                              
+                              <div class="input-group m-1">
+                              <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <input type="checkbox" name="TrueChoice[]" value="4">
+                              </span>
+                              </div>
+                              <input  type="text" class="form-control" name="choix[]"  placeholder="Choix 4">
+                              </div>
+                              <div class="input-group m-1">
+                                <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                  <input type="checkbox" name="TrueChoice[]" value="5">
+                                </span>
+                                </div>
+                                <input  type="text" class="form-control" name="choix[]"  placeholder="Choix 5">
+                                </div>
+                                <div class="input-group m-1">
+                                  <div class="input-group-prepend">
+                                  <span class="input-group-text">
+                                    <input type="checkbox" name="TrueChoice[]" value="6">
+                                  </span>
+                                  </div>
+                                  <input  type="text" class="form-control" name="choix[]"  placeholder="Choix 6">
+                                  </div>`;
+
+            $('input[type=radio][name=type_question]').click(function() {
+              
+                switch(this.value){
+                  case "1" :   
+                      $(".ResponsesContent").html(mc)
+                    break;
+                  case "2" : 
+                  $(".ResponsesContent").html(ma)
+                    break;
+                  case "3" : 
+                  $(".ResponsesContent").html(bool)
+                    break;
+
+                    case "4" : 
+                  $(".ResponsesContent").html("")
+                    break; 
+                }
+                  
+              })
+            });
+</script>
 @endsection

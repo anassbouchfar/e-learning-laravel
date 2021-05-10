@@ -3,7 +3,12 @@
 /public/storage
 /public/dashboard
 /storage/*.key
-/vendor
+/vendor/*
+!vendor/laravel/Auth/*
+
+
+
+
 .env
 .env.backup
 .phpunit.result.cache

@@ -29,6 +29,11 @@
   <link rel="stylesheet" href="/dashboard/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="/dashboard/plugins/summernote/summernote-bs4.min.css">
+  <style>
+    .table th,td {
+       /* text-align: center;   */
+      }
+  </style>
   @yield('Headerscripts')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -121,15 +126,32 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{route("user.Training.index")}}" class="nav-link @hasSection('EntrainementActive') active @endif">
+            <a href="{{route("admin.CorrigerTest")}}" class="nav-link @hasSection('CorrigerTest') active @endif">
               <i class="fas fa-circle nav-icon"></i>
-              <p>Entrainement</p>
+              <p>Tests à Corriger</p>
+              <span class="badge badge-info right">
+                {{$nbTestsAcorriger}}
+              </span>
             </a>
           </li>
           <li class="nav-item ">
-            <a href="{{route("user.quizzes.index")}}" class="nav-link @hasSection('activeTests') active @endif">
+            <a href="{{route("admin.ResultTests")}}" class="nav-link @hasSection('activeTests') active @endif">
               <i class="fas fa-circle nav-icon"></i>
-              <p>Tests</p>
+              <p>Résultat Tests</p>
+              <span class="badge badge-info right">
+                {{$Result_tests}}
+              </span>
+              
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a href="{{route("admin.users.index")}}" class="nav-link @hasSection('activeUsers') active @endif">
+              <i class="fas fa-user nav-icon"></i>
+              <p>Users</p>
+              <span class="badge badge-info right">
+                {{$nbOfUsers}}
+              </span>
+              
             </a>
           </li>
           

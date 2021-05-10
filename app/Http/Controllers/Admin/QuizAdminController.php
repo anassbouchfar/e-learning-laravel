@@ -4,14 +4,68 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Level;
+use App\PendingQuiz;
+use App\Question;
 use App\Quiz;
 use App\Subject;
+use App\User;
 use Illuminate\Http\Request;
 
 class QuizAdminController extends Controller
 {
 
+    function CorrigerTestStore(Request $request){
+        //dd($request->all());
+        $user=User::find($request->user_id);
+        $quiz=$user->quizzes()->where("quiz_id","=",$request->quiz_id)->first();
+        $sum = array_sum($request->correctResponse);
+        $quiz->pivot->correctQuestions+=$sum;
+        $quiz->pivot->score=$quiz->pivot->correctQuestions*100/$quiz->questions->count();
+    
+        foreach ($request->pendigQuestion as  $pq) {
+           $pend=PendingQuiz::find($pq);
+           $pend->isCorrected=1;
+           $pend->save();
+        }
+        
+        $quiz->pivot->isAdminCorrection=0;
+        $quiz->pivot->save();
 
+        return back()->with("message","Test corrigé avec succès");
+    }
+    function CorrigerTest(){
+        $quizzes=PendingQuiz::where("isCorrected","=","0")->get();
+        $quizzes=$quizzes->groupBy(["user_id","quiz_id"]);
+
+        foreach ($quizzes as $key => $value) {
+
+            $user = User::find($key);
+
+            $quizzes[$key]->each(function($value1,$key2) use ($user, $key,$quizzes){
+                $score = $user->quizzes()->where("quiz_id","=",$key2)->first()->pivot->score;
+                foreach ($value1 as $key5 => $question) {
+                    $q=Question::find($question->question_id)->content;
+                    $value1[$key5]["content"]=$q;
+                }
+                $quizzes[$key][$key2] = collect(["score"=>$score,"questions"=>$value1]);
+              
+            });
+
+
+
+            $quizzes[$key]=$quizzes[$key]->keyBy(function($tests, $key1){
+                return Quiz::find($key1)->title;
+            });
+          
+        }
+
+        $quizzes=$quizzes->keyBy(function($tests, $key){
+            return User::find($key)->name;
+        });
+        
+        
+        return view("admin.results.corriger",["quizzes"=>$quizzes]);
+    }
 
     function getTestsByModule(Subject $module){
         $quizzes = $module->quizzes()->get();
@@ -20,6 +74,20 @@ class QuizAdminController extends Controller
         });
         $levels =Level::all();
         return view("admin.quizzes.testsByModule",["quizzes"=>$quizzes,"subject"=>$module,"levels"=>$levels]);
+    }
+
+    public function ResultTests(){
+        //$data = User::with('quizzes')->with('grade')->where("role_id","=",2)->get();
+       /*$data=User::with(array('quizzes'=> function($query) use ($quizzes){ 
+            $query->wherePivot('score' , '!=' ,null);     
+            $query->wherePivot('quiz_id' , '=' ,$quizzes->id);   
+        }))->where("role_id","=",2)->get() ;*/
+        $data = User::with("grade")->get()->filter(function ($user){
+            return $user->quizzes->count()>0;
+        });
+        //print($data);
+        //dd();
+        return view("admin.results.resultTests",["data"=>$data]);
     }
 
     /**

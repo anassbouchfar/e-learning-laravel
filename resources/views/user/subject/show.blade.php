@@ -18,7 +18,6 @@
           </thead>
           <tbody>
             @foreach ($courses as $course)
-            
             <tr>
               <a href="">
               <td>{{$course->title}}</td>
@@ -34,6 +33,7 @@
                 @endif
               </td>
               <td>
+                <a target="_blank" href="/cours/{{$course->pdf_path}}" class="btn btn-info btn-sm"><i class="fas fa-file-pdf"></i></a>
                 @if($pivot=$course->pivot)
                 <a href="{{route("user.cours.show",["cour"=>$course->id])}}" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Continuer</a>
                 @else

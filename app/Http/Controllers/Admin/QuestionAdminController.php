@@ -13,6 +13,64 @@ use App\Quiz;
 class QuestionAdminController extends Controller
 {
 
+    public function addQuestion(Request $request){
+        //dd($request->all());
+        $question =new Question;
+        if ($request->hasFile('questionImage')) {
+            $file = $request->file('questionImage'); 
+            $file_name = time().'.'.$file->getClientOriginalName();
+            $file->move(public_path('picturesTests') , $file_name); // move files to destination folder
+            $question->image_path=$file_name;
+        }
+        $question->content = $request->content;
+        switch($request->type_question){
+            case 1:
+                $question->type_question="multiple_choice";
+                $choices=array();
+                foreach ($request->choix as $key => $choix) {
+                    if($choix){
+                        $choice=new Choice();
+                        $choice->content=$choix;
+                        if(($key+1)==$request->TrueChoice) $choice->isCorrect=1;
+                        array_push($choices,$choice);
+                    }
+                    
+                }
+                
+                break;
+            case 2:
+                $question->type_question="multiple_answers";
+                $choices=array();
+                foreach ($request->choix as $key => $choix) {
+                    if($choix){
+                        $choice=new Choice();
+                        $choice->content=$choix;
+                        if( in_array(($key+1),$request->TrueChoice)) $choice->isCorrect=1;
+                        array_push($choices,$choice);
+                    }
+                    
+                }
+                break;
+            case 3:
+                $question->type_question="boolean";
+                $question->boolean_answer=$request->choiceBool;
+                break;
+            case 4:
+                $question->type_question="input";
+                break;
+        }
+        if($request->subject_id){
+            $question->subject_id = $request->subject_id;
+            $question->save();
+        }else{
+            $question->save();
+            $question->quizzes()->attach($request->quiz_id);
+        }
+        if(isset($choices))
+            $question->choices()->saveMany($choices);
+        
+        return back()->with("message","Question ajouté avec succès");
+    }
     
     function uploadQuestionsEntrainement(Request $request){
         $collection=(new QuestionInmport)->toArray($request->file("questionsFile"));  
@@ -63,21 +121,25 @@ class QuestionAdminController extends Controller
         switch($row[1]){
             case "multiple_choice":
                 $choices=array();
-                foreach(range(2,5) as $i){
-                    if($i==2) $choice =new Choice(["content"=>$row[$i],"isCorrect"=>1]);
-                    else{
-                        $choice =new Choice(["content"=>$row[$i]]);
-                    }
+                $choice =new Choice(["content"=>$row[2],"isCorrect"=>1]);
+                array_push($choices,$choice);
+                $i=3;
+                while(isset($row[$i])){
+                    $choice =new Choice(["content"=>$row[$i]]);
                     array_push($choices,$choice);
+                    $i++;
                 }
-                    
                     $question->choices()->saveMany($choices);
                 break;
                 case "multiple_answers": 
                         $choices=array();
-                        $choice =new Choice(["content"=>$row[2],"isCorrect"=>1]);
-                        array_push($choices,$choice);
-                        $i=3;
+                        $i=2;
+                        while(isset($row[$i])){
+                            $choice =new Choice(["content"=>$row[$i],"isCorrect"=>1]);
+                            array_push($choices,$choice);
+                            $i++;
+                        }
+                        $i++;
                         while(isset($row[$i])){
                             $choice =new Choice(["content"=>$row[$i]]);
                             array_push($choices,$choice);
@@ -107,21 +169,28 @@ class QuestionAdminController extends Controller
         switch($row[2]){
             case "multiple_choice":
                 $choices=array();
-                foreach(range(4,7) as $i){
-                    if($i==4) $choice =new Choice(["content"=>$row[$i],"isCorrect"=>1]);
-                    else{
-                        $choice =new Choice(["content"=>$row[$i]]);
-                    }
+                $choice =new Choice(["content"=>$row[4],"isCorrect"=>1]);
+                array_push($choices,$choice);
+                $i=5;
+                while(isset($row[$i])){
+                    $choice =new Choice(["content"=>$row[$i]]);
                     array_push($choices,$choice);
+                    $i++;
                 }
-                    
+                    array_push($choices,$choice);
                     $question->choices()->saveMany($choices);
                 break;
+
                 case "multiple_answers": 
                         $choices=array();
-                        $choice =new Choice(["content"=>$row[4],"isCorrect"=>1]);
-                        array_push($choices,$choice);
-                        $i=5;
+                        $i=4;
+                        while(isset($row[$i])){
+                            $choice =new Choice(["content"=>$row[$i],"isCorrect"=>1]);
+                            array_push($choices,$choice);
+                            $i++;
+                        }
+
+                        $i++;
                         while(isset($row[$i])){
                             $choice =new Choice(["content"=>$row[$i]]);
                             array_push($choices,$choice);

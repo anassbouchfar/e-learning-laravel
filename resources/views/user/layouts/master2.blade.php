@@ -29,6 +29,11 @@
   <link rel="stylesheet" href="/dashboard/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="/dashboard/plugins/summernote/summernote-bs4.min.css">
+  <style>
+    .table th,td {
+        text-align: center;   
+      }
+  </style>
   @yield('Headerscripts')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -130,6 +135,10 @@
             <a href="{{route("user.quizzes.index")}}" class="nav-link @hasSection('activeTests') active @endif">
               <i class="fas fa-circle nav-icon"></i>
               <p>Tests</p>
+              <span class="badge badge-info right">
+                {{$nbquizzesNotPassed}}
+              </span>
+              
             </a>
           </li>
           
@@ -156,6 +165,19 @@
             </div><!-- /.row -->
           </div><!-- /.container-fluid -->
         </div>
+        @if(Session::has('message'))
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h5><i class="icon fas fa-check"></i> Alert !</h5>
+                {{ Session::get('message') }}
+              </div>
+            </div>
+          </div>
+        </div>
+      @endif
         <!-- /.content-header -->
           <!-- Main content -->
         <section class="content">
@@ -174,8 +196,7 @@
     </div>
 <!-- ./wrapper -->
 
-@yield('Footerscripts')
-
+        
 <!-- jQuery -->
 <script src="/dashboard/plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -184,6 +205,8 @@
 <script>
   $.widget.bridge('uibutton', $.ui.button)
 </script>
+@yield('Footerscripts')
+
 <!-- Bootstrap 4 -->
 <script src="/dashboard/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- ChartJS -->

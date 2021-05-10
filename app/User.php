@@ -38,7 +38,7 @@ class User extends Authenticatable
 
     public function quizzes(){
         return $this->belongsToMany("App\Quiz")
-                    ->withPivot(['score']);
+                    ->withPivot(['score','isAdminCorrection','correctQuestions']);
     }
 
     public function courses(){
@@ -48,5 +48,12 @@ class User extends Authenticatable
 
     public function trainings(){
         return $this->hasMany("App\Training");
+    }
+
+    public function grade(){
+        return $this->belongsTo("App\Grade");
+    }
+    public function role(){
+        return $this->belongsTo("App\Role");
     }
 }
