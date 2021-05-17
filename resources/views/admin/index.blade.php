@@ -3,7 +3,6 @@
 
 
 @section('content')
-    <h1>this is admin home page</h1>
 @endsection
 
 

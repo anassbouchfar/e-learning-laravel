@@ -51,6 +51,8 @@ class UserAdminController extends Controller
         if($test){
             $test->pivot->score=null;
             $test->pivot->correctQuestions=null;
+            $test->pivot->opened=null;
+            $test->pivot->isAdminCorrection=null;
             $test->pivot->save();
         }else{
             $user->quizzes()->attach($quiz->id);

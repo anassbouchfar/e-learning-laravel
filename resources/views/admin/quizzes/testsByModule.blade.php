@@ -43,6 +43,10 @@
                                 @endforeach
                             </select>
                           </div>
+                          <div class="form-group">
+                            <label for="testDuration">durée (min)</label>
+                            <input name="testDuration" required type="text" class="form-control" id="testDuration" placeholder="entrer Duration min" >
+                          </div> 
 
                    
                   </div>

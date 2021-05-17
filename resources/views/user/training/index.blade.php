@@ -71,6 +71,7 @@
             <th>Nom</th>
             <th>Type Entrainement</th>
             <th>Score</th>
+            <th >Note/20</th>
             <th>Date & heure</th>
           </tr>
         </thead>
@@ -93,6 +94,7 @@
             @endswitch
           </td>
           <td>{{$training->score}} %</td>
+          <td>{{ number_format(($training->score*20)/100,2) }}</td>
           <td>
             {{$training->created_at}}
           </td>

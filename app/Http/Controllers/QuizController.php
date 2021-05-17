@@ -59,7 +59,6 @@ class QuizController extends Controller
          $quizwithUser=Auth::user()->quizzes()->where("id","=",$quiz->id)->first();
          $quizwithUser->pivot->score=$scoreWithPercent;
          $quizwithUser->pivot->correctQuestions=$score;
-         
 
          if($this->isContainInputQuestion($quiz)){
             foreach ($request->QuestionId as $QuestionId) {
@@ -87,14 +86,16 @@ class QuizController extends Controller
 
         $score=0;
         foreach ($request->QuestionId as $QuestionId) {
-            $user_response = $request->option[$QuestionId];
+            $user_response = $request->option[$QuestionId] ?? null;
             $question  = Question::find($QuestionId);
                 switch ($question->type_question) {
                     case "boolean":
+                        if($user_response===null) break;
                         $user_response=="true" ? $user_response=true : $user_response=false;
                         if($question->boolean_answer==$user_response)  $score++  ;
                         break;
                     case "multiple_choice":
+                        if($user_response===null) break;
                         $choices=$question->choices()->get();
                         $correct_choice= $choices->filter(function($choice){
                             return $choice->isCorrect==1;
@@ -102,6 +103,7 @@ class QuizController extends Controller
                         if($correct_choice->first()->id==$user_response) $score++ ;
                         break;
                     case "multiple_answers":
+                        if($user_response===null) break;
                         $choices=$question->choices()->get();
                         $correct_answers= $choices->filter(function($choice){
                             return $choice->isCorrect==1;
@@ -146,8 +148,17 @@ class QuizController extends Controller
             $question->choices = $choices->shuffle();
             unset($question->pivot);
             return $question;
-        });        
-        return view("user.Passquiz",["quiz"=>$quiz,"questions"=>$questions]);
+        });  
+        $duration=$quiz->duration;
+        $pivot=Auth::user()->quizzes->find($quiz)->pivot;   
+        if($pivot->opened==null){
+            $pivot->opened=now();
+            $pivot->save();
+        }    
+        
+        $opened=$pivot->opened;
+        
+        return view("user.Passquiz",["quiz"=>$quiz,"questions"=>$questions,"duration"=>$duration,"opened"=>$opened]);
     }
 
     /**

@@ -16,6 +16,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    if(Auth::check()){
+        if(Auth::user()->role_id==1){
+            return redirect("/admin/home");
+        }
+        return redirect("/home");
+    }
     return view('welcome');
 })->name("test");
 
@@ -70,7 +76,4 @@ Route::group(["as"=>"admin.","prefix"=>"admin","middleware"=>['auth','adminRole'
     Route::get("/Tests/{module}","Admin\QuizAdminController@getTestsByModule")->name("testsByModule");
 });
 
-Route::get("/test",function(){
-    return PendingQuiz::all();
-});
 

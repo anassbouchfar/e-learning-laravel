@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'cin', 'password','id_role','id_grade'
+        'name', 'cin', 'password','role_id','grade_id'
     ];
     /**
      * The attributes that should be hidden for arrays.
@@ -38,7 +38,7 @@ class User extends Authenticatable
 
     public function quizzes(){
         return $this->belongsToMany("App\Quiz")
-                    ->withPivot(['score','isAdminCorrection','correctQuestions']);
+                    ->withPivot(['score','isAdminCorrection','correctQuestions','opened'])->withTimestamps();
     }
 
     public function courses(){

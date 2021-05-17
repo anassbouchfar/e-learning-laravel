@@ -40,7 +40,7 @@
     <div class="wrapper">
         <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="/dashboard/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+    <img class="animation__shake" src="/dashboard/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="100" width="100">
   </div>
 
   <!-- Navbar -->
@@ -83,8 +83,8 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="/" class="brand-link">
-      <img src="/dashboard/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">QUIZ FRA</span>
+      <img src="/dashboard/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="max-height:50px;height:42px">
+      <span class="brand-text font-weight-light">E-Learning</span>
     </a>
 
     <!-- Sidebar -->

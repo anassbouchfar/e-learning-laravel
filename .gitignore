@@ -3,8 +3,8 @@
 /public/storage
 /public/dashboard
 /storage/*.key
-/vendor/*
-!vendor/laravel/Auth/*
+/vendor
+!vendor/laravel/framework/src/Illuminate/Auth/*
 
 
 

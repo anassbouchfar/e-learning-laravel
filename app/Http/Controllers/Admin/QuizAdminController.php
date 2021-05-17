@@ -123,6 +123,7 @@ class QuizAdminController extends Controller
         $quiz->description=$request->description;
         $quiz->subject_id=$request->subject_id;
         $quiz->level_id=$request->level_id;
+        $quiz->duration=$request->testDuration;
         $quiz->save();
         return back()->with("message","Test ajouté avec succès");
     }

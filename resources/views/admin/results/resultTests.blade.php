@@ -14,7 +14,8 @@
                 <th scope="col">User</th>  
                 <th scope="col">Cin</th>  
                 <th scope="col">Test</th>  
-                <th scope="col">Score</th>
+                <th scope="col">Score %</th>
+                <th scope="col">Note/20</th>
                 <th scope="col">Etat</th>
               </tr>
             </thead>
@@ -30,6 +31,9 @@
                                             <TD>
                                                 --
                                             </TD>
+                                            <TD>
+                                                --
+                                            </TD>
                                             <td>
                                                 <span class="badge rounded-pill bg-info">en cours de correction</span>
                                             </td>
@@ -37,6 +41,7 @@
                                             <TD>
                                                 {{$item->quizzes[0]->pivot->score}} %
                                             </TD>
+                                            <td>{{ number_format(($item->quizzes[0]->pivot->score*20)/100,2) }}</td>
                                             @if($item->quizzes[0]->pivot->score>60)
                                                 <TD>
                                                     <span class="badge rounded-pill bg-success">Réussi</span>
@@ -48,6 +53,7 @@
                                             @endif
                                         @endif
                                 @else 
+                                    <TD>--</TD>
                                     <TD>--</TD>
                                     <TD>
                                         <span class="badge rounded-pill bg-warning">Not Passed</span>
@@ -62,11 +68,16 @@
                                         <TD>
                                             --
                                         </TD>
+                                        <TD>
+                                            --
+                                        </TD>
                                         <td>
                                             <span class="badge rounded-pill bg-info">en cours de correction</span>
                                         </td>
                                     @else
                                         <TD>{{$item->quizzes[$i]->pivot->score}} %</TD>
+                                        <td>{{ number_format(($item->quizzes[$i]->pivot->score*20)/100,2) }}</td>
+
                                         @if($item->quizzes[$i]->pivot->score>60)
                                             <TD>
                                                 <span class="badge rounded-pill bg-succes">Réussi</span>
@@ -79,6 +90,7 @@
                                     @endif
                                    
                                 @else 
+                                    <TD>--</TD>
                                     <TD>--</TD>
                                     <TD>
                                         <span class="badge rounded-pill bg-warning">Not Passed</span>
@@ -97,6 +109,9 @@
                                 <TD>
                                    --
                                 </TD>
+                                <TD>
+                                    --
+                                 </TD>
                                 <td>
                                     <span class="badge rounded-pill bg-info">en cours de correction</span>
                                 </td>
@@ -104,6 +119,8 @@
                                     <TD>
                                         {{$item->quizzes[0]->pivot->score}} %
                                     </TD>
+                                    <td>{{ number_format(($item->quizzes[0]->pivot->score*20)/100,2) }}</td>
+
                                     @if($item->quizzes[0]->pivot->score>60)
                                         <TD>
                                             <span class="badge rounded-pill bg-success">Réussi</span>
@@ -116,6 +133,7 @@
                                 @endif
                                 
                             @else 
+                                <TD>--</TD>
                                 <TD>--</TD>
                                 <TD>
                                     <span class="badge rounded-pill bg-warning">Not Passed</span>
