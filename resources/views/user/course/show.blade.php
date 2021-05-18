@@ -4,8 +4,7 @@
 
 
 @section('Headerscripts')
-<script src="http://mozilla.github.io/pdf.js/build/pdf.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="/js/pdf.js"></script>
 <meta name="_token" content="{{ csrf_token() }}">
 
 @endsection
