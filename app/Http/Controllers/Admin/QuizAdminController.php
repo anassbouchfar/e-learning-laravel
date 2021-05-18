@@ -122,7 +122,7 @@ class QuizAdminController extends Controller
         $quiz->title=$request->title;
         $quiz->description=$request->description;
         $quiz->subject_id=$request->subject_id;
-        $quiz->level_id=$request->level_id;
+        //$quiz->level_id=$request->level_id;
         $quiz->duration=$request->testDuration;
         $quiz->save();
         return back()->with("message","Test ajouté avec succès");
@@ -157,9 +157,17 @@ class QuizAdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,Quiz $quiz)
     {
-        //
+        //dd($quiz);
+        //$quiz= Quiz::find($id);
+        $quiz->title=$request->title;
+        $quiz->description=$request->description;
+        $quiz->subject_id=$request->subject_id;
+        //$quiz->level_id=$request->level_id;
+        $quiz->duration=$request->testDuration;
+        $quiz->save();
+        return back()->with("message","Test modifié avec succès");
     }
 
     /**
@@ -170,6 +178,7 @@ class QuizAdminController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Quiz::find($id)->delete();
+        return back()->with('message','Test supprimé avec succès !');
     }
 }

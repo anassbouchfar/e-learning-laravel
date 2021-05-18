@@ -14,6 +14,7 @@
                 <th scope="col">User</th>  
                 <th scope="col">Cin</th>  
                 <th scope="col">Test</th>  
+                <th scope="col">Date & Time</th>  
                 <th scope="col">Score %</th>
                 <th scope="col">Note/20</th>
                 <th scope="col">Etat</th>
@@ -21,11 +22,13 @@
             </thead>
             <tbody>
                 @foreach ($data as $item)
+                
                     @if(count($item->quizzes)>1)
                         <TR>
                             <TD ROWSPAN="{{count($item->quizzes)}}">{{$item->name}}</TD> 
                             <TD ROWSPAN="{{count($item->quizzes)}}">{{$item->cin}}</TD> 
                                 <TD>{{$item->quizzes[0]->title}}</TD>
+                                <TD>{{$item->quizzes[0]->pivot->updated_at}}</TD>
                                 @if($item->quizzes[0]->pivot->score!==null)
                                         @if($item->quizzes[0]->pivot->isAdminCorrection)
                                             <TD>
@@ -63,6 +66,7 @@
                         @for ($i = 1; $i < count($item->quizzes); $i++)
                             <tr>
                                 <TD>{{$item->quizzes[$i]->title}}</TD>
+                                <TD>{{$item->quizzes[$i]->pivot->updated_at}}</TD>
                                 @if($item->quizzes[$i]->pivot->score!==null)
                                     @if($item->quizzes[0]->pivot->isAdminCorrection)
                                         <TD>
@@ -104,6 +108,7 @@
                             <TD>{{$item->name}}</TD> 
                             <TD>{{$item->cin}}</TD> 
                             <TD>{{$item->quizzes[0]->title}}</TD>
+                            <TD>{{$item->quizzes[0]->pivot->updated_at}}</TD>
                             @if($item->quizzes[0]->pivot->score!==null)
                                 @if($item->quizzes[0]->pivot->isAdminCorrection)
                                 <TD>

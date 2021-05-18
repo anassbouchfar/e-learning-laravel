@@ -12,7 +12,7 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label style="font-size: large !important" for="cin" class="col-md-4 col-form-label text-md-right">{{ __('CIN') }}</label>
+                            <label style="font-size: 25px !important;font-weight: bold;" for="cin" class="col-md-4 col-form-label text-md-right">{{ __('CIN') }}</label>
 
                             <div class="col-md-6">
                                 <input  id="cin"  class="form-control @error('cin') is-invalid @enderror" name="cin" value="{{ old('cin') }}" required autocomplete="cin" autofocus>
@@ -26,7 +26,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label style="font-size: large !important" for="password" class="col-md-4 col-form-label text-md-right">{{ __('PASSWORD') }}</label>
+                            <label style="font-size: 25px !important;font-weight: bold;" for="password" class="col-md-4 col-form-label text-md-right">{{ __('PASSWORD') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">

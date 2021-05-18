@@ -12,7 +12,7 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label style="font-size: large !important" for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                            <label style="font-size: 25px !important;font-weight: bold;" for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -26,7 +26,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label style="font-size: large !important" for="cin" class="col-md-4 col-form-label text-md-right">{{ __('CIN') }}</label>
+                            <label style="font-size: 25px !important;font-weight: bold;" for="cin" class="col-md-4 col-form-label text-md-right">{{ __('CIN') }}</label>
 
                             <div class="col-md-6">
                                 <input id="cin"  class="form-control @error('cin') is-invalid @enderror" name="cin" value="{{ old('cin') }}" required autocomplete="cin">
@@ -39,7 +39,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label style="font-size: large !important" for="type" class="col-md-4 col-form-label text-md-right">Type</label>
+                            <label style="font-size: 25px !important;font-weight: bold;" for="type" class="col-md-4 col-form-label text-md-right">Type</label>
 
                             <div class="col-md-6">
                                 <select class="form-control @error('grade') is-invalid @enderror" name="grade" required>
@@ -56,7 +56,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label style="font-size: large !important" for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                            <label style="font-size: 25px !important;font-weight: bold;" for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
@@ -70,7 +70,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label style="font-size: large !important" for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+                            <label style="font-size: 25px !important;font-weight: bold;" for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">

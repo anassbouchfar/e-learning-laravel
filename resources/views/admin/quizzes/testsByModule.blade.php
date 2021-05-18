@@ -35,17 +35,10 @@
                           <label for="Description">Description</label>
                           <input name="Description"  type="text" class="form-control" id="Description" placeholder="entrer Description" >
                         </div>
-                        <div class="form-group">
-                            <label for="levels">Levels</label>
-                            <select name="level_id" required class="custom-select form-control-border border-width-2" id="levels">
-                                @foreach ($levels as $level)
-                                <option value="{{$level->id}}">{{$level->name}}</option>
-                                @endforeach
-                            </select>
-                          </div>
+                    
                           <div class="form-group">
                             <label for="testDuration">durée (min)</label>
-                            <input name="testDuration" required type="text" class="form-control" id="testDuration" placeholder="entrer Duration min" >
+                            <input name="testDuration" required type="number" min="2"  class="form-control" id="testDuration" placeholder="entrer Duration min" >
                           </div> 
 
                    
@@ -82,8 +75,77 @@
             <td>{{$quiz->level}}</td>
             <td>
               <a  class="btn btn-info btn-sm" ><i class="nav-icon fas fa-book"></i></a>
-              <a  class="btn btn-primary btn-sm" ><i class="fas fa-edit"></i></a>
-              <a  class="btn btn-danger btn-sm" ><i class="fas fa-trash"></i></a>
+              <a  class="btn btn-primary btn-sm" data-toggle="modal" data-target="#update{{$quiz->id}}"><i class="fas fa-edit"></i></a>
+              <div class="modal fade" id="update{{$quiz->id}}" style="display: none;" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Modifier {{$quiz->title}}</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <form action="{{route('admin.quizzes.update',['quiz'=>$quiz->id])}}" method="POST">
+                        @csrf
+                        @method("PUT")
+                        <input type="hidden" name="subject_id" value="{{$subject->id}}">
+
+                        <div class="modal-body">
+                          <div class="form-group">
+                            <label for="Nom{{$quiz->id}}">Nom</label>
+                            <input name="title" required type="text" class="form-control" id="Nom{{$quiz->id}}" placeholder="entrer Nom" value="{{$quiz->title}}">
+                          </div>
+                          <div class="form-group">
+                            <label for="Description{{$quiz->id}}">Description</label>
+                            <input name="description"  type="text" class="form-control" id="Description{{$quiz->id}}" placeholder="entrer Description" value="{{$quiz->description}}">
+                          </div>
+                        
+                            <div class="form-group">
+                              <label for="testDuration{{$quiz->id}}">durée (min)</label>
+                              <input name="testDuration" required  type="number" min="2" class="form-control" id="testDuration{{$quiz->id}}" placeholder="entrer Duration min" value="{{$quiz->duration}}">
+                            </div> 
+  
+                     
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-success">Save changes</button>
+                    </div>
+                </form>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+
+              <a  class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete{{$quiz->id}}"><i class="fas fa-trash"></i></a>
+              <div class="modal fade" id="delete{{$quiz->id}}" style="display: none;" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content bg-danger">
+                    <div class="modal-header">
+                      <h4 class="modal-title"></h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <p>êtes-vous sûr de vouloir supprimer le module {{$quiz->title}}</p>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                      <button type="button" class="btn btn-outline-light" data-dismiss="modal">Annuler</button>
+                      <form action="{{route("admin.quizzes.destroy",["quiz"=>$quiz->id])}}" method="POST">
+                        @csrf
+                        @method("delete")
+                        <button type="submit" class="btn btn-outline-light">Supprimer</button>
+                      </form>
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+
+
               <a  type="button" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#uplodQuestions{{$quiz->id}}"><i class="fas fa-upload"></i> Questions</a>
               <a  type="button" class="btn btn-warning btn-sm"   data-toggle="modal" data-target="#QWithImage{{$quiz->id}}"><i class="fas fa-plus"></i> Question</a>
               <div  class="modal fade" id="QWithImage{{$quiz->id}}" style="display: none;" aria-hidden="true">

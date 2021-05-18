@@ -145,7 +145,7 @@ function diff(d1,d2){
 console.log("opened = "+opened)
 console.log("currentDate = "+currentDate.getTime())
 
-var diff =diff(opened,currentDate.getTime())
+var diff =diff(opened,currentDate.getTime())-60
 
 console.log("diff = "+diff)
 //console.log(currentDate.getDate())
@@ -155,7 +155,8 @@ console.log("diff = "+diff)
 
 window.onload = function () {
     if(diff>=duration) {
-      document.getElementById("formExam").submit();
+      alert("ok")
+      //document.getElementById("formExam").submit();
       
     }else{
       var current_duration = duration - diff
