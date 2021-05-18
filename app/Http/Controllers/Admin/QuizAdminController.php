@@ -69,11 +69,8 @@ class QuizAdminController extends Controller
 
     function getTestsByModule(Subject $module){
         $quizzes = $module->quizzes()->get();
-        $quizzes->each(function($quiz,$key){
-            $quiz->level=$quiz->level()->first()->name;
-        });
-        $levels =Level::all();
-        return view("admin.quizzes.testsByModule",["quizzes"=>$quizzes,"subject"=>$module,"levels"=>$levels]);
+     
+        return view("admin.quizzes.testsByModule",["quizzes"=>$quizzes,"subject"=>$module]);
     }
 
     public function ResultTests(){
