@@ -83,7 +83,7 @@ var url =null
 var pdfjsLib = window['pdfjs-dist/build/pdf'];
 
 // The workerSrc property shall be specified.
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'http://mozilla.github.io/pdf.js/build/pdf.worker.js';
+pdfjsLib.GlobalWorkerOptions.workerSrc = '/js/pdf.worker.js';
 
 var pdfDoc = null,
     pageNum = {{$course->pivot->currentPage}},
