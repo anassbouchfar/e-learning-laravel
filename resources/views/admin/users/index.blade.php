@@ -118,7 +118,32 @@
                  
                   
                   <a type="button" class="btn btn-warning" data-toggle="modal" data-target="#resetPassword{{$user->id}}"> <i class="fas fa-key"></i> Reset Password</a>
-                  
+                  <a  class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete{{$user->id}}"><i class="fas fa-trash"></i></a>
+                  <div class="modal fade" id="delete{{$user->id}}" style="display: none;" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content bg-danger">
+                        <div class="modal-header">
+                          <h4 class="modal-title"></h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <p>êtes-vous sûr de vouloir supprimer le module {{$user->name}}</p>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                          <button type="button" class="btn btn-outline-light" data-dismiss="modal">Annuler</button>
+                          <form action="{{route("admin.users.destroy",["user"=>$user->id])}}" method="POST">
+                            @csrf
+                            @method("delete")
+                            <button type="submit" class="btn btn-outline-light">Supprimer</button>
+                          </form>
+                        </div>
+                      </div>
+                      <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                  </div>
               </td>
               <div  class="modal fade" id="affectTest{{$user->id}}" style="display: none;" aria-hidden="true">
                 <div class="modal-dialog">
